@@ -1,8 +1,6 @@
 plugins {
     id("java")
     id("maven-publish")
-    id("org.springframework.boot") version "3.3.0"
-    id("io.spring.dependency-management") version "1.1.5"
 }
 
 
@@ -17,15 +15,6 @@ ext {
     // Add other versions as needed
 }
 
-bootJar {
-    enabled = true
-}
-
-jar {
-    enabled = false
-}
-
-
 repositories {
     mavenCentral()
 }
@@ -39,9 +28,8 @@ publishing {
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:$lombokVersion")
-    annotationProcessor("org.projectlombok:lombok")
-    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
