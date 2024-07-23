@@ -17,13 +17,6 @@ ext {
     // Add other versions as needed
 }
 
-bootJar {
-    enabled = false
-}
-
-jar {
-    archiveFileName = "${project.name}-${project.version}.jar"
-}
 
 repositories {
     mavenCentral()
