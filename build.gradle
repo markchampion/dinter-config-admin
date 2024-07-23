@@ -17,6 +17,14 @@ ext {
     // Add other versions as needed
 }
 
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
 
 repositories {
     mavenCentral()
