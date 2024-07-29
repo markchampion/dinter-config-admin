@@ -3,6 +3,7 @@ package com.dinter.config.kafka.config;
 import com.dinter.config.data.KafkaConfigData;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.admin.AdminClient;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import java.util.Map;
 @Configuration
 @EnableRetry
 @ComponentScan("com.dinter.config")
+@ConditionalOnProperty(name = "dinter-kafka.enable-kafka-initialize", havingValue = "true")
 public class KafkaAdminConfig {
 
     private final KafkaConfigData kafkaConfigData;
