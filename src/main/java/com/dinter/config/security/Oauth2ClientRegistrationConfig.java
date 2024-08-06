@@ -37,7 +37,7 @@ public class Oauth2ClientRegistrationConfig {
                             .clientSecret(clientProperty.getClientSecret())
                             .tokenUri(clientProperty.getTokenUri())
                             .authorizationGrantType(new AuthorizationGrantType(clientProperty.getAuthorizationGrantType()))
-                            .scope(clientProperty.getScope().split(","))
+                            .scope(clientProperty.getScope().split(",\\s+"))
                             .build();
                 }).collect(Collectors.toList());
         return new InMemoryClientRegistrationRepository(registrations);
