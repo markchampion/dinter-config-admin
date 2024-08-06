@@ -9,7 +9,7 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 @ComponentScan("com.dinter.config")
-@Configuration
+//@Configuration
 public class RetryConfig {
 
     private final RetryConfigData retryConfigData;
