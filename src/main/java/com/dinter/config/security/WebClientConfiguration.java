@@ -21,6 +21,7 @@ public class WebClientConfiguration {
     public WebClient webClient(ReactiveOAuth2AuthorizedClientManager reactiveOAuth2AuthorizedClientManager) {
         val serverOAuth2AuthorizedClientExchangeFilterFunction = new ServerOAuth2AuthorizedClientExchangeFilterFunction(reactiveOAuth2AuthorizedClientManager);
         serverOAuth2AuthorizedClientExchangeFilterFunction.setDefaultClientRegistrationId("github");
+
         return WebClient.builder()
                 .filter(serverOAuth2AuthorizedClientExchangeFilterFunction)
                 .build();

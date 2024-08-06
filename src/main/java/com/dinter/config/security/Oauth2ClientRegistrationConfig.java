@@ -4,6 +4,7 @@ import com.dinter.config.data.OAuth2ClientProperties;
 import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.InMemoryReactiveOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager;
@@ -59,8 +60,8 @@ public class Oauth2ClientRegistrationConfig {
                 .clientCredentials()
                 .build();
 
-        val authorizedClientManager = new DefaultReactiveOAuth2AuthorizedClientManager(
-                reactiveClientRegistrationRepository, new AuthenticatedPrincipalServerOAuth2AuthorizedClientRepository(reactiveOAuth2AuthorizedClientService)
+        val authorizedClientManager = new AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager(
+                reactiveClientRegistrationRepository, reactiveOAuth2AuthorizedClientService
         );
         authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
         return authorizedClientManager;
