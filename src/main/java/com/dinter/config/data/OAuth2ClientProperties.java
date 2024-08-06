@@ -27,5 +27,6 @@ public class OAuth2ClientProperties {
         String authorizationGrantType;
         String tokenUri;
         String authorizationUri;
+        String authenticationMethod;
     }
 }

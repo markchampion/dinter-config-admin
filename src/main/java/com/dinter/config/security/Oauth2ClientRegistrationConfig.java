@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.client.web.reactive.function.client.S
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.client.web.server.AuthenticatedPrincipalServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import java.util.stream.Collectors;
 
@@ -40,6 +41,7 @@ public class Oauth2ClientRegistrationConfig {
                             .clientSecret(clientProperty.getClientSecret())
                             .tokenUri(clientProperty.getTokenUri())
                             .authorizationUri(clientProperty.getAuthorizationUri())
+                            .clientAuthenticationMethod(new ClientAuthenticationMethod(clientProperty.getAuthenticationMethod()))
                             .authorizationGrantType(new AuthorizationGrantType(clientProperty.getAuthorizationGrantType()))
                             .scope(clientProperty.getScope().split(",\\s+"))
                             .build();
