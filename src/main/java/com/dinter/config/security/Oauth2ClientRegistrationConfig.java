@@ -4,16 +4,18 @@ import com.dinter.config.data.OAuth2ClientProperties;
 import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.InMemoryReactiveOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientProviderBuilder;
+import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultReactiveOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.security.oauth2.client.web.server.AuthenticatedPrincipalServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.stream.Collectors;
@@ -28,7 +30,7 @@ public class Oauth2ClientRegistrationConfig {
     }
 
     @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
+    public ReactiveClientRegistrationRepository reactiveClientRegistrationRepository() {
         val registrations = properties.getRegistration().entrySet().stream()
                 .map(entry -> {
                     val clientProperty = entry.getValue();
@@ -40,33 +42,27 @@ public class Oauth2ClientRegistrationConfig {
                             .scope(clientProperty.getScope().split(",\\s+"))
                             .build();
                 }).collect(Collectors.toList());
-        return new InMemoryClientRegistrationRepository(registrations);
+        return new InMemoryReactiveClientRegistrationRepository(registrations);
     }
 
     @Bean
-    public OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
-        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
+    public ReactiveOAuth2AuthorizedClientService reactiveOAuth2AuthorizedClientService(ReactiveClientRegistrationRepository clientRegistrationRepository) {
+        return new InMemoryReactiveOAuth2AuthorizedClientService(clientRegistrationRepository);
     }
 
-
     @Bean
-    public OAuth2AuthorizedClientManager authorizedClientManager(
-            ClientRegistrationRepository clientRegistrationRepository,
-            OAuth2AuthorizedClientService authorizedClientService
+    public ReactiveOAuth2AuthorizedClientManager authorizedClientManager(
+            ReactiveClientRegistrationRepository reactiveClientRegistrationRepository,
+            ReactiveOAuth2AuthorizedClientService reactiveOAuth2AuthorizedClientService
     ) {
-        val authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
+        val authorizedClientProvider = ReactiveOAuth2AuthorizedClientProviderBuilder.builder()
                 .clientCredentials()
                 .build();
 
-        val authorizedClientManager = new DefaultOAuth2AuthorizedClientManager(
-                clientRegistrationRepository, new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService)
+        val authorizedClientManager = new DefaultReactiveOAuth2AuthorizedClientManager(
+                reactiveClientRegistrationRepository, new AuthenticatedPrincipalServerOAuth2AuthorizedClientRepository(reactiveOAuth2AuthorizedClientService)
         );
         authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
         return authorizedClientManager;
-    }
-
-    @Bean
-    public ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2AuthorizedClientExchangeFilterFunction(OAuth2AuthorizedClientManager authorizedClientManager) {
-        return new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
     }
 }
