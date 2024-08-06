@@ -26,5 +26,6 @@ public class OAuth2ClientProperties {
         String scope;
         String authorizationGrantType;
         String tokenUri;
+        String authorizationUri;
     }
 }
