@@ -1,0 +1,11 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: Ov23liTiOB0xUOjWU2Ib
+            client-secret: 22e960ad85f8ea9e2f590eefe1f763b8c254e7bd
+            scope: repo, user
+            authorization-grant-type: client_credentials
+            token-uri: https://github.com/login/oauth/access_token
