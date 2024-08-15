@@ -1,8 +1,10 @@
 package com.dinter.config.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.context.annotation.Configuration;
@@ -15,25 +17,20 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Configuration
 @ConfigurationProperties(prefix = "spring.security.oauth2.resourceserver")
-public class DinterOauth2ResourceServerProperties {
-    private final Map<String, OAuth2ResourceServerProperties.Jwt> jwts = new HashMap<>();
+public class Oauth2ResourceServerProperties {
+    private Map<String, Jwt> providers;
 
-    private final OAuth2ResourceServerProperties.Opaquetoken opaqueToken = new OAuth2ResourceServerProperties.Opaquetoken();
-
-    public OAuth2ResourceServerProperties.Opaquetoken getOpaquetoken() {
-        return this.opaqueToken;
-    }
-
-    @Getter
-    @Setter
+    @Data
     public static class Jwt {
 
         /**
@@ -94,25 +91,5 @@ public class DinterOauth2ResourceServerProperties {
             }
         }
 
-    }
-
-    @Getter
-    @Setter
-    public static class Opaquetoken {
-
-        /**
-         * Client id used to authenticate with the token introspection endpoint.
-         */
-        private String clientId;
-
-        /**
-         * Client secret used to authenticate with the token introspection endpoint.
-         */
-        private String clientSecret;
-
-        /**
-         * OAuth 2.0 endpoint through which token introspection is accomplished.
-         */
-        private String introspectionUri;
     }
 }

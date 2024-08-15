@@ -1,7 +1,8 @@
 package com.dinter.config.security;
 
-import com.dinter.config.data.DinterOauth2ResourceServerProperties;
+import com.dinter.config.data.Oauth2ResourceServerProperties;
 import com.dinter.config.data.JwtConfig;
+import com.dinter.config.data.OAuth2ClientProperties;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +21,13 @@ import java.util.Map;
 public class AuthenticationProviderConfig {
 
     private final JwtConfig jwtConfig;
-    private final DinterOauth2ResourceServerProperties resourceServerProperties;
+    private final Oauth2ResourceServerProperties resourceServerProperties;
+    private final OAuth2ClientProperties oAuth2ResourceServerProperties;
 
-    public AuthenticationProviderConfig(JwtConfig jwtConfig, DinterOauth2ResourceServerProperties resourceServerProperties) {
+    public AuthenticationProviderConfig(JwtConfig jwtConfig, Oauth2ResourceServerProperties resourceServerProperties, OAuth2ClientProperties oAuth2ResourceServerProperties) {
         this.jwtConfig = jwtConfig;
         this.resourceServerProperties = resourceServerProperties;
+        this.oAuth2ResourceServerProperties = oAuth2ResourceServerProperties;
     }
 
 
@@ -50,7 +53,7 @@ public class AuthenticationProviderConfig {
     @Bean
     public Map<String, JwtDecoder> oauth2JwtDecoders() {
         val jwtDecoders = new HashMap<String, JwtDecoder>();
-        resourceServerProperties.getJwts().forEach((key, value) -> {
+        resourceServerProperties.getProviders().forEach((key, value) -> {
             val decoder = NimbusJwtDecoder.withJwkSetUri(value.getJwkSetUri())
                     .build();
             jwtDecoders.put(key, decoder);

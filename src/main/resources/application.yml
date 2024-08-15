@@ -1,6 +1,12 @@
 spring:
   security:
     oauth2:
+      resourceserver:
+        providers:
+          keycloak:
+            jwk-set-uri: http://localhost:8088/realms/dinter-application/protocol/openid-connect/certs
+          google:
+            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
       client:
         registration:
           github:
@@ -9,3 +15,8 @@ spring:
             scope: repo, user
             authorization-grant-type: client_credentials
             token-uri: https://github.com/login/oauth/access_token
+
+config:
+  jwt:
+    secret: dO1Cw60qC6jGp5o0Veajqijn4iBc6nvt
+    expiration-time: 86400000
