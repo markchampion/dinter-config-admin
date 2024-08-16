@@ -1,6 +1,5 @@
 package com.dinter.config.security;
 
-import com.dinter.config.data.OAuth2ClientProperties;
 import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +9,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfiguration {
-
-    private final OAuth2ClientProperties properties;
-
-    public WebClientConfiguration(OAuth2ClientProperties properties) {
-        this.properties = properties;
-    }
 
     @Bean
     public WebClient webClient(ReactiveOAuth2AuthorizedClientManager reactiveOAuth2AuthorizedClientManager) {
