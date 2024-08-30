@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Slf4j
-//@Component
+@Component
 @ConditionalOnProperty(name = "dinter-kafka.disable-kafka-initialize", havingValue = "false", matchIfMissing = true)
 public class KafkaAdminClient {
     private final KafkaConfigData kafkaConfigData;

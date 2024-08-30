@@ -15,7 +15,7 @@ import java.util.Map;
 @Configuration
 @EnableRetry
 @ComponentScan("com.dinter.config")
-@ConditionalOnProperty(name = "dinter-kafka.enable-kafka-initialize", havingValue = "true")
+@ConditionalOnProperty(name = "dinter-kafka.disable-kafka-initialize", havingValue = "false", matchIfMissing = true)
 public class KafkaAdminConfig {
 
     private final KafkaConfigData kafkaConfigData;
