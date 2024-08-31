@@ -29,9 +29,5 @@ public class KafkaAdminConfig {
         return AdminClient.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaConfigData.getBootstrapServers()));
     }
 
-    @Bean
-    public WebClient webClient() {
-        return WebClient.builder().build();
-    }
 }
 

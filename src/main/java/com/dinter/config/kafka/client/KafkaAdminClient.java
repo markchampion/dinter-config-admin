@@ -84,6 +84,7 @@ public class KafkaAdminClient {
             sleep(sleepTimeMs);
             sleepTimeMs *= multiplier;
         }
+        log.info("Schema registry status: OK");
     }
 
     private HttpStatus getSchemaRegistryStatus() {
