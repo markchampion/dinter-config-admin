@@ -29,7 +29,7 @@ publishing {
 }
 
 artifactory {
-    contextUrl = 'http://localhost:8092/artifactory'
+    contextUrl =" '${context_url}"
     publish {
         repository {
             repoKey = 'dinter-gradle-dev-local' // The Artifactory repository key to publish to
@@ -54,7 +54,9 @@ artifactory {
 dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-
+    implementation ("org.apache.avro:avro:1.11.3") {
+        exclude group: 'org.slf4j'
+    }
     implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-security:$springBootVersion")
