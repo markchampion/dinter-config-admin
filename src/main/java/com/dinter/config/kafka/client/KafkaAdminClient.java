@@ -19,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -62,7 +63,7 @@ public class KafkaAdminClient {
         Integer maxRetry = retryConfigData.getMaxAttempts();
         int multiplier = retryConfigData.getMultiplier().intValue();
         Long sleepTimeMs = retryConfigData.getSleepTimeMs();
-        for (String topic : kafkaConfigData.getTopicNamesToCreate()) {
+        for (String topic : kafkaConfigData.getTopicNames().keySet()) {
             while (!isTopicCreated(topics, topic)) {
                 checkMaxRetry(retryCount++, maxRetry);
                 sleep(sleepTimeMs);
@@ -123,12 +124,12 @@ public class KafkaAdminClient {
     }
 
     private CreateTopicsResult doCreateTopics(RetryContext retryContext) {
-        List<String> topicNames = kafkaConfigData.getTopicNamesToCreate();
+        Map<String, KafkaConfigData.KafkaTopicDetails> topicNames = kafkaConfigData.getTopicNames();
         log.info("Creating {} topics(s), attempt {}", topicNames.size(), retryContext.getRetryCount());
-        List<NewTopic> kafkaTopics = topicNames.stream().map(topic -> new NewTopic(
-                topic.trim(),
-                kafkaConfigData.getNumOfPartitions(),
-                kafkaConfigData.getReplicationFactor()
+        List<NewTopic> kafkaTopics = topicNames.entrySet().stream().map(entry -> new NewTopic(
+                entry.getKey().trim(),
+                entry.getValue().getNumOfPartitions(),
+                entry.getValue().getReplicationFactor()
         )).collect(Collectors.toList());
         return adminClient.createTopics(kafkaTopics);
     }
@@ -146,7 +147,7 @@ public class KafkaAdminClient {
     private Collection<TopicListing> doGetTopics(RetryContext retryContext)
             throws ExecutionException, InterruptedException {
         log.info("Reading kafka topic {}, attempt {}",
-                kafkaConfigData.getTopicNamesToCreate().toArray(), retryContext.getRetryCount());
+                kafkaConfigData.getTopicNames().keySet().toArray(), retryContext.getRetryCount());
         Collection<TopicListing> topics = adminClient.listTopics().listings().get();
         if (topics != null) {
             topics.forEach(topic -> log.debug("Topic with name {}", topic.name()));

@@ -11,13 +11,15 @@ version = "1.0-SNAPSHOT"
 ext {
     set("springBootVersion", "3.3.0")
     set("springCloudVersion", "4.1.2")
-    set("springKafkaVersion", "3.2.1")
+    set("springKafkaVersion", "3.2.3")
     set("lombokVersion", "1.18.30")
     // Add other versions as needed
 }
 
 repositories {
-    mavenCentral()
+    maven {
+        mavenCentral()
+    }
 }
 
 publishing {
@@ -29,7 +31,7 @@ publishing {
 }
 
 artifactory {
-    contextUrl ="${context_url}"
+    contextUrl = "${context_url}"
     publish {
         repository {
             repoKey = "${repo_key}" // The Artifactory repository key to publish to
@@ -44,7 +46,7 @@ artifactory {
             publishArtifacts = true
             publishBuildInfo = true
             // Properties to be attached to the published artifacts.
-            properties = ['qa.level': 'basic', 'dev.team' : 'core']
+            properties = ['qa.level': 'basic', 'dev.team': 'core']
             // Publish generated POM files to Artifactory (true by default)
             publishPom = true
         }
@@ -54,13 +56,14 @@ artifactory {
 dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-    implementation ("org.apache.avro:avro:1.11.3") {
+    api("org.apache.avro:avro:1.11.3") {
         exclude group: 'org.slf4j'
     }
+
     implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-security:$springBootVersion")
-    implementation("org.springframework.kafka:spring-kafka:$springKafkaVersion")
+    api("org.springframework.kafka:spring-kafka:$springKafkaVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springKafkaVersion")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client:$springBootVersion")
     implementation("org.springframework.security:spring-security-oauth2-resource-server:6.3.0")
