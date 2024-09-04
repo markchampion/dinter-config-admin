@@ -17,9 +17,7 @@ ext {
 }
 
 repositories {
-    maven {
-        mavenCentral()
-    }
+    mavenCentral()
 }
 
 publishing {
