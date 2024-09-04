@@ -1,10 +1,12 @@
 package com.dinter.config.data;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+import java.util.Map;
 
 @Data
 @Configuration
@@ -14,8 +16,16 @@ public class KafkaConfigData {
     private String schemaRegistryUrlKey;
     private String schemaRegistryUrl;
     private String topicName;
-    private List<String> topicNamesToCreate;
+    private Map<String, KafkaTopicDetails> topicNames;
     private Integer numOfPartitions;
     private Short replicationFactor;
+
+    @Getter
+    @Setter
+    public static class KafkaTopicDetails {
+        private String topicName;
+        private Integer numOfPartitions;
+        private Short replicationFactor;
+    }
 
 }

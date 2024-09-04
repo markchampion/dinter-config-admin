@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Map;
 
@@ -29,9 +28,5 @@ public class KafkaAdminConfig {
         return AdminClient.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaConfigData.getBootstrapServers()));
     }
 
-    @Bean
-    public WebClient webClient() {
-        return WebClient.builder().build();
-    }
 }
 
